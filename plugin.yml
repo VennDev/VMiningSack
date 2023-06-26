@@ -1,0 +1,18 @@
+name: VMiningSack
+api: 5.0.0
+author: VennVDev
+main: vennv\vminingsack\VMiningSack
+version: 1.0.1
+
+commands:
+  vminingsack:
+    description: VMiningSack command
+    usage: /vminingsack give <player> <type> <amount>
+    aliases: [vms]
+    permission: vminingsack.command
+    permission-message: You don't have permission to use this command.
+
+permissions:
+  vminingsack.command:
+    description: VMiningSack command permission
+    default: op
