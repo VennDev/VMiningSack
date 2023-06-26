@@ -236,7 +236,7 @@ final class DataManager {
                 $i++;
             }
 
-            $menu->setListener(function(InvMenuTransaction $transaction) use ($item, $tags, $loreOreItem, $size, $insertItem) : InvMenuTransactionResult {
+            $menu->setListener(function(InvMenuTransaction $transaction) use ($item, $tags, $loreOreItem, $size) : InvMenuTransactionResult {
 
                 $player = $transaction->getPlayer();
                 $itemClicked = $transaction->getItemClicked();
