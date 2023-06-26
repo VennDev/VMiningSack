@@ -1,7 +1,7 @@
 # VMiningSack
 - One plugin for PocketMine-PMMP 5
 
-# Note
+# Notes
 - The image representing this plugin is for illustrative purposes only, if you want similar objects you can customize your own.
 
 # Features
