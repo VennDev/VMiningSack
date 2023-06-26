@@ -139,3 +139,7 @@ types:
 
 # Images
 <img src="https://github.com/VennDev/VMiningSack/blob/main/images/Untitled.png" alt="VMiningSack" height="300" width="300" />
+
+# Credits
+- Email: pnam5005@gmail.com
+- Paypal: lifeboat909@gmail.com
