@@ -1,6 +1,10 @@
 # VMiningSack
 - One plugin for PocketMine-PMMP 5
 
+# Features
+- Save your bag space as you dig mines or collect blocks packed into something called VMiningSack
+- It's all done on asynchronous which makes the plugin lightweight.
+
 # Config
 ```config
 ---
