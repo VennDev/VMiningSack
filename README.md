@@ -86,15 +86,14 @@ types:
     name: "Medium Mining Sack"
     # Types of ores, max is 28
     ores:
-      ores:
-        # material, name (name is optional)
-        - [ "coal", false ]
-        - [ "raw_iron", false ]
-        - [ "raw_gold", false ]
-        - [ "raw_copper", false ]
-        - [ "redstone_dust", false ]
-        - [ "diamond", false ]
-        - [ "emerald", false ]
+      # material, name (name is optional)
+      - [ "coal", false ]
+      - [ "raw_iron", false ]
+      - [ "raw_gold", false ]
+      - [ "raw_copper", false ]
+      - [ "redstone_dust", false ]
+      - [ "diamond", false ]
+      - [ "emerald", false ]
   large:
     # Item for the mining sack
     item:
@@ -105,15 +104,14 @@ types:
     name: "Large Mining Sack"
     # Types of ores, max is 28
     ores:
-      ores:
-        # material, name (name is optional)
-        - [ "coal", false ]
-        - [ "raw_iron", false ]
-        - [ "raw_gold", false ]
-        - [ "raw_copper", false ]
-        - [ "redstone_dust", false ]
-        - [ "diamond", false ]
-        - [ "emerald", false ]
+      # material, name (name is optional)
+      - [ "coal", false ]
+      - [ "raw_iron", false ]
+      - [ "raw_gold", false ]
+      - [ "raw_copper", false ]
+      - [ "redstone_dust", false ]
+      - [ "diamond", false ]
+      - [ "emerald", false ]
   extra:
     # Item for the mining sack
     item:
@@ -124,15 +122,14 @@ types:
     name: "Extra Mining Sack"
     # Types of ores, max is 28
     ores:
-      ores:
-        # material, name (name is optional)
-        - [ "coal", false ]
-        - [ "raw_iron", false ]
-        - [ "raw_gold", false ]
-        - [ "raw_copper", false ]
-        - [ "redstone_dust", false ]
-        - [ "diamond", false ]
-        - [ "emerald", false ]
+      # material, name (name is optional)
+      - [ "coal", false ]
+      - [ "raw_iron", false ]
+      - [ "raw_gold", false ]
+      - [ "raw_copper", false ]
+      - [ "redstone_dust", false ]
+      - [ "diamond", false ]
+      - [ "emerald", false ]
 
 ...
 ```
