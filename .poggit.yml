@@ -5,4 +5,8 @@ branches:
 projects:
   VMiningSack:
     path: ""
+  libs:
+      - src: muqsit/InvMenu/InvMenu
+        version: ^4.4
+        branch: "4.0"
 ...
