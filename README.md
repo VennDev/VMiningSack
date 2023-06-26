@@ -2,11 +2,16 @@
 <img src="https://github.com/VennDev/VMiningSack/blob/main/icon.png" alt="VMiningSack" height="150" width="150" />
 - One plugin for PocketMine-PMMP 5
 
+# How to install it ?
+- You should install InvMenu here: [Sources](https://github.com/Muqsit/InvMenu)
+
 # Notes
 - The image representing this plugin is for illustrative purposes only, if you want similar objects you can customize your own.
 
 # Features
 - Save your bag space as you dig mines or collect blocks packed into something called VMiningSack
+- Automatically pocket objects or so-called blocks into your Sack when digging them.
+- Allow pocketing similar items or blocks in your Sack with 1 tap.
 - It's all done on asynchronous which makes the plugin lightweight.
 
 # Config
