@@ -8,6 +8,11 @@
 # Notes
 - The image representing this plugin is for illustrative purposes only, if you want similar objects you can customize your own.
 
+# Commands
+```
+/vminingsack or /vms - give <player> <type> <amount>
+```
+
 # Features
 - Save your bag space as you dig mines or collect blocks packed into something called VMiningSack
 - Automatically pocket objects or so-called blocks into your Sack when digging them.
