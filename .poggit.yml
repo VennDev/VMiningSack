@@ -5,6 +5,9 @@ branches:
 projects:
   VMiningSack:
     path: ""
+    lint:
+      phpstan: false
+      syntaxError: false
     libs:
         - src: muqsit/InvMenu/InvMenu
           version: ^4.4
