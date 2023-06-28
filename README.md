@@ -17,7 +17,6 @@
 - Save your bag space as you dig mines or collect blocks packed into something called VMiningSack
 - Automatically pocket objects or so-called blocks into your Sack when digging them.
 - Allow pocketing similar items or blocks in your Sack with 1 tap.
-- It's all done on asynchronous which makes the plugin lightweight.
 
 # Config
 ```config
