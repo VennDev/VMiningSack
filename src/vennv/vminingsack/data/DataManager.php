@@ -29,7 +29,6 @@ use pocketmine\item\Item;
 use pocketmine\nbt\tag\Tag;
 use pocketmine\player\Player;
 use pocketmine\utils\Config;
-use vennv\vminingsack\async\Async;
 use vennv\vminingsack\utils\Balance;
 use vennv\vminingsack\utils\ItemUtil;
 use vennv\vminingsack\VMiningSack;
@@ -164,18 +163,16 @@ final class DataManager {
             $border = [8, 17, 26, 35, 44, 53];
             $itemBorder = ItemUtil::getItem($borderMaterial)->setCustomName("_");
 
-            Async::create(function() use ($inventory, $border, $itemBorder) {
-                foreach ($border as $slot) {
-                    if ($slot == 8 || $slot == 53) {
-                        for ($i = $slot - 8; $i <= $slot; $i++) {
-                            $inventory->setItem($i, $itemBorder);
-                        }
-                    } else {
-                        $inventory->setItem($slot - 8, $itemBorder);
-                        $inventory->setItem($slot, $itemBorder);
+            foreach ($border as $slot) {
+                if ($slot == 8 || $slot == 53) {
+                    for ($i = $slot - 8; $i <= $slot; $i++) {
+                        $inventory->setItem($i, $itemBorder);
                     }
+                } else {
+                    $inventory->setItem($slot - 8, $itemBorder);
+                    $inventory->setItem($slot, $itemBorder);
                 }
-            });
+            }
 
             $materialInsertItem = (string) self::getConfig()->getNested("gui.insert_item.material");
             $nameInsertItem = (string) self::getConfig()->getNested("gui.insert_item.name");
@@ -237,41 +234,39 @@ final class DataManager {
                 $inventory = $transaction->getAction()->getInventory();
 
                 if ($itemClicked->getNamedTag()->getTag("vinsert_item") !== null) {
-                    Async::create(function() use ($item, $player, $inventory, $loreOreItem, $size) {
-                        array_map(function ($content) use ($item, $player, $inventory, $loreOreItem, $size) {
+                    array_map(function ($content) use ($item, $player, $inventory, $loreOreItem, $size) {
 
-                            $type = self::getType($item);
-                            $tags = self::getTagsListOres($type);
+                        $type = self::getType($item);
+                        $tags = self::getTagsListOres($type);
 
-                            if (in_array($content->getName(), array_values($tags))) {
+                        if (in_array($content->getName(), array_values($tags))) {
 
-                                $checkTag = array_search($content->getName(), $tags);
-                                $itemInInvPlayer = $content;
+                            $checkTag = array_search($content->getName(), $tags);
+                            $itemInInvPlayer = $content;
 
-                                array_map(function ($ct) use ($itemInInvPlayer, $checkTag, $inventory, $loreOreItem, $size, $player) {
-                                    $tagValue = $ct->getNamedTag()->getTag($checkTag)?->getValue();
-                                    if ($tagValue !== null) {
+                            array_map(function ($ct) use ($itemInInvPlayer, $checkTag, $inventory, $loreOreItem, $size, $player) {
+                                $tagValue = $ct->getNamedTag()->getTag($checkTag)?->getValue();
+                                if ($tagValue !== null) {
 
-                                        $balancing = self::getBalancing($itemInInvPlayer->getCount(), $tagValue, $size);
+                                    $balancing = self::getBalancing($itemInInvPlayer->getCount(), $tagValue, $size);
 
-                                        if ($balancing->should) {
-                                            $itemNew = clone $ct;
+                                    if ($balancing->should) {
+                                        $itemNew = clone $ct;
 
-                                            $loreReplaced = str_replace(["%count%", "%max%"], [$balancing->add, $size], $loreOreItem);
-                                            $itemNew->setLore($loreReplaced);
-                                            $itemNew->getNamedTag()->setInt($checkTag, $balancing->add);
+                                        $loreReplaced = str_replace(["%count%", "%max%"], [$balancing->add, $size], $loreOreItem);
+                                        $itemNew->setLore($loreReplaced);
+                                        $itemNew->getNamedTag()->setInt($checkTag, $balancing->add);
 
-                                            $itemNew->setCount(1);
+                                        $itemNew->setCount(1);
 
-                                            $inventory->setItem(array_search($ct, $inventory->getContents()), $itemNew);
+                                        $inventory->setItem(array_search($ct, $inventory->getContents()), $itemNew);
 
-                                            $player->getInventory()->setItem(array_search($itemInInvPlayer, $player->getInventory()->getContents()), $itemInInvPlayer->setCount($balancing->quantity));
-                                        }
+                                        $player->getInventory()->setItem(array_search($itemInInvPlayer, $player->getInventory()->getContents()), $itemInInvPlayer->setCount($balancing->quantity));
                                     }
-                                }, $inventory->getContents());
-                            }
-                        }, $player->getInventory()->getContents());
-                    });
+                                }
+                            }, $inventory->getContents());
+                        }
+                    }, $player->getInventory()->getContents());
                     return $transaction->discard();
                 }
 

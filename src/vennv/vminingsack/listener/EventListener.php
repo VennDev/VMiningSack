@@ -23,7 +23,6 @@ namespace vennv\vminingsack\listener;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
-use vennv\vminingsack\async\Async;
 use vennv\vminingsack\data\DataManager;
 
 final class EventListener implements Listener {
@@ -32,59 +31,55 @@ final class EventListener implements Listener {
      * @throws \Throwable
      */
     public function onInteract(PlayerInteractEvent $event) : void {
-        Async::create(function() use ($event) {
-            $player = $event->getPlayer();
-            $item = $player->getInventory()->getItemInHand();
-            if (DataManager::isMiningSack($item)) {
-                DataManager::openMiningSack($player, $item);
-                $event->cancel();
-            }
-        });
+        $player = $event->getPlayer();
+        $item = $player->getInventory()->getItemInHand();
+        if (DataManager::isMiningSack($item)) {
+            DataManager::openMiningSack($player, $item);
+            $event->cancel();
+        }
     }
 
     /**
      * @throws \Throwable
      */
     public function onBreak(BlockBreakEvent $event) : void {
-        Async::create(function() use ($event) {
-            $player = $event->getPlayer();
-            $inventory = $player->getInventory();
-            $drops = $event->getDrops();
+        $player = $event->getPlayer();
+        $inventory = $player->getInventory();
+        $drops = $event->getDrops();
 
-            $cancel = false;
-            foreach ($inventory->getContents() as $index => $content) {
+        $cancel = false;
+        foreach ($inventory->getContents() as $index => $content) {
 
-                if ($cancel) {
-                    break;
-                }
+            if ($cancel) {
+                break;
+            }
 
-                if (DataManager::isMiningSack($content)) {
+            if (DataManager::isMiningSack($content)) {
 
-                    $type = DataManager::getType($content);
-                    $tags = DataManager::getTagsListOres($type);
+                $type = DataManager::getType($content);
+                $tags = DataManager::getTagsListOres($type);
 
-                    foreach ($drops as $item) {
-                        if (in_array($item->getName(), array_values($tags))) {
+                foreach ($drops as $item) {
+                    if (in_array($item->getName(), array_values($tags))) {
 
-                            $size = (int) DataManager::getConfig()->getNested("types." . $type . ".size");
+                        $size = (int) DataManager::getConfig()->getNested("types." . $type . ".size");
 
-                            $value = $content->getNamedTag()->getInt(array_search($item->getName(), $tags));
+                        $value = $content->getNamedTag()->getInt(array_search($item->getName(), $tags));
 
-                            $balancing = DataManager::getBalancing($item->getCount(), $value, $size);
+                        $balancing = DataManager::getBalancing($item->getCount(), $value, $size);
 
-                            if ($balancing->should) {
-                                $content->getNamedTag()->setInt(
-                                    array_search($item->getName(), $tags),
-                                    $balancing->add
-                                );
-                                $inventory->setItem($index, $content);
-                                $item->setCount($balancing->quantity);
-                                $cancel = true;
-                            }
+                        if ($balancing->should) {
+                            $content->getNamedTag()->setInt(
+                                array_search($item->getName(), $tags),
+                                $balancing->add
+                            );
+                            $inventory->setItem($index, $content);
+                            $item->setCount($balancing->quantity);
+                            $cancel = true;
                         }
                     }
                 }
             }
-        });
+        }
     }
 }
