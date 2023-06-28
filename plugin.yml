@@ -2,7 +2,7 @@ name: VMiningSack
 api: 5.0.0
 author: VennVDev
 main: vennv\vminingsack\VMiningSack
-version: 1.0.1
+version: 1.0.3
 
 commands:
   vminingsack:

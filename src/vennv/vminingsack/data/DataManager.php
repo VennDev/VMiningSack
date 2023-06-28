@@ -29,6 +29,7 @@ use pocketmine\item\Item;
 use pocketmine\nbt\tag\Tag;
 use pocketmine\player\Player;
 use pocketmine\utils\Config;
+use vennv\vminingsack\async\Async;
 use vennv\vminingsack\utils\Balance;
 use vennv\vminingsack\utils\ItemUtil;
 use vennv\vminingsack\VMiningSack;
@@ -163,10 +164,8 @@ final class DataManager {
             $border = [8, 17, 26, 35, 44, 53];
             $itemBorder = ItemUtil::getItem($borderMaterial)->setCustomName("_");
 
-            $fibers = [];
-            foreach ($border as $slot) {
-                $fiber = new \Fiber(function() use ($player, $slot, $inventory, $itemBorder) {
-                    \Fiber::suspend(microtime(true) . $player->getName());
+            Async::create(function() use ($inventory, $border, $itemBorder) {
+                foreach ($border as $slot) {
                     if ($slot == 8 || $slot == 53) {
                         for ($i = $slot - 8; $i <= $slot; $i++) {
                             $inventory->setItem($i, $itemBorder);
@@ -175,13 +174,8 @@ final class DataManager {
                         $inventory->setItem($slot - 8, $itemBorder);
                         $inventory->setItem($slot, $itemBorder);
                     }
-                });
-                $fiber->start();
-                $fibers[] = $fiber;
-            }
-            foreach ($fibers as $fiber) {
-                $fiber->resume();
-            }
+                }
+            });
 
             $materialInsertItem = (string) self::getConfig()->getNested("gui.insert_item.material");
             $nameInsertItem = (string) self::getConfig()->getNested("gui.insert_item.name");
@@ -243,8 +237,7 @@ final class DataManager {
                 $inventory = $transaction->getAction()->getInventory();
 
                 if ($itemClicked->getNamedTag()->getTag("vinsert_item") !== null) {
-                    $fiber = new \Fiber(function() use ($item, $player, $inventory, $loreOreItem, $size) {
-                        \Fiber::suspend();
+                    Async::create(function() use ($item, $player, $inventory, $loreOreItem, $size) {
                         array_map(function ($content) use ($item, $player, $inventory, $loreOreItem, $size) {
 
                             $type = self::getType($item);
@@ -279,8 +272,6 @@ final class DataManager {
                             }
                         }, $player->getInventory()->getContents());
                     });
-                    $fiber->start();
-                    $fiber->resume();
                     return $transaction->discard();
                 }
 

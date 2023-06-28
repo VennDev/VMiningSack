@@ -23,6 +23,7 @@ namespace vennv\vminingsack\listener;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
+use vennv\vminingsack\async\Async;
 use vennv\vminingsack\data\DataManager;
 
 final class EventListener implements Listener {
@@ -31,8 +32,7 @@ final class EventListener implements Listener {
      * @throws \Throwable
      */
     public function onInteract(PlayerInteractEvent $event) : void {
-        $fiber = new \Fiber(function() use ($event) {
-            \Fiber::suspend();
+        Async::create(function() use ($event) {
             $player = $event->getPlayer();
             $item = $player->getInventory()->getItemInHand();
             if (DataManager::isMiningSack($item)) {
@@ -40,16 +40,13 @@ final class EventListener implements Listener {
                 $event->cancel();
             }
         });
-        $fiber->start();
-        $fiber->resume();
     }
 
     /**
      * @throws \Throwable
      */
     public function onBreak(BlockBreakEvent $event) : void {
-        $fiber = new \Fiber(function() use ($event) {
-            \Fiber::suspend();
+        Async::create(function() use ($event) {
             $player = $event->getPlayer();
             $inventory = $player->getInventory();
             $drops = $event->getDrops();
@@ -89,7 +86,5 @@ final class EventListener implements Listener {
                 }
             }
         });
-        $fiber->start();
-        $fiber->resume();
     }
 }
