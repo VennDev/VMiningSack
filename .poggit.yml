@@ -10,6 +10,6 @@ projects:
       syntaxError: false
     libs:
         - src: muqsit/InvMenu/InvMenu
-          version: ^4.4
-          branch: "4.0"
+          version: ^4.6.5
+          branch: "pm5"
 ...
